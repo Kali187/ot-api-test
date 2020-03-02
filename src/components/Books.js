@@ -24,7 +24,6 @@ const Books = () => {
             }
         )
         .then(({ data }) => {
-            console.log('Loaded data');
             setLoaded(true);
             setBooks(data.books);
             setAllBooks(data.count);
@@ -32,7 +31,6 @@ const Books = () => {
         .catch(err => {
             setLoaded(true);
             setError(err);
-            console.log( err );
         });
     }, [page, itemsPerPage]);
     
@@ -41,10 +39,10 @@ const Books = () => {
             {books &&
                 <div>
                     <span>page {page} of { Math.ceil( allBooks / itemsPerPage ) }</span>
-                    { page > 1 &&
+                    {page > 1 &&
                         <Link to={`/books/${ +page - 1 }`}> &lt; Previous page</Link>
                     }
-                    { page < Math.ceil( allBooks / itemsPerPage) &&
+                    {page < Math.ceil( allBooks / itemsPerPage) &&
                         <Link to={`/books/${ +page + 1 }`}> Next page &gt;</Link>
                     }
                 </div>
