@@ -41,8 +41,12 @@ const Books = () => {
             {books &&
                 <div>
                     <span>page {page} of { Math.ceil( allBooks / itemsPerPage ) }</span>
-                    <Link to={`/books/${ +page - 1 }`}> &lt; Previous page</Link>
-                    <Link to={`/books/${ +page + 1 }`}> Next page &gt;</Link>
+                    { page > 1 &&
+                        <Link to={`/books/${ +page - 1 }`}> &lt; Previous page</Link>
+                    }
+                    { page < Math.ceil( allBooks / itemsPerPage) &&
+                        <Link to={`/books/${ +page + 1 }`}> Next page &gt;</Link>
+                    }
                 </div>
             }
             <ul className="Books">
