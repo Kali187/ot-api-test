@@ -1,3 +1,54 @@
+$background-colour: #E7ECEF;
+$book-colour: #0F7173;
+$book-title-colour: #eee;
+body {
+    margin: 0;
+    padding: 1rem;
+    font-size: 14px;
+    line-height: 1.4;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: linear-gradient(lighten($background-colour, 10), darken($background-colour, 10));
+    min-height: 100vh;
+    color: #23395B;
+    a {
+        color: #F05D5E; // should have it's own variable
+    }
+}
+
 .App {
-    text-align: center;
+    display: block;
+    margin: 0 auto;
+}
+
+.Books {
+    list-style: none;
+    margin: 1rem;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat( auto-fit, 12rem);
+    grid-column-gap: 2rem;
+    grid-row-gap: 2rem;
+    justify-content: center;
+}
+
+.Book {
+    box-sizing: border-box;
+    height: 1.61 * 12rem; // magic numbers should move to variabless
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background: linear-gradient(lighten($book-colour, 5), darken($book-colour, 5));
+    box-shadow: 0 5px 10px rgba( 0, 0, 0, .15), 0 0 1px rgba( 0, 0, 0, .1);
+    transition: transform .25s ease-in-out;
+    &:hover {
+        transform: scale(1.1);
+    }
+    &__title {
+        font-size: medium;
+        font-weight: 600;
+        margin: 0;
+        color: $book-title-colour;
+    }
 }

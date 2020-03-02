@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 const Books = () => {
     const fetchUrl = 'http://nyx.vima.ekt.gr:3000';
     const booksUrl = '/api/books';
 
-    const [books, setBooks] = useState();
+    const [books, setBooks] = useState([]);
+    const [itemsPerPage, setItemsPerPage] = useState(12);
+    const [allBooks, setAllBooks] = useState();
+    const [loaded, setLoaded] = useState(false);
+    const [error, setError] = useState();
     let { page } = useParams();
     
     useEffect(() => {
@@ -15,34 +19,47 @@ const Books = () => {
             `${fetchUrl}${booksUrl}`,
             {
                 page: page,
-                itemsPerPage : 10,
+                itemsPerPage : itemsPerPage,
                 filters: []
             }
         )
         .then(({ data }) => {
+            console.log('Loaded data');
+            setLoaded(true);
             setBooks(data.books);
+            setAllBooks(data.count);
+        })
+        .catch(err => {
+            setLoaded(true);
+            setError(err);
+            console.log( err );
         });
-        }, []);
+    }, [page, itemsPerPage]);
     
-    
-    
-    return ( 
-        <div className="Books">
-            Books. page: [{ page }]
-            { books ?
-                <ul>
-                    {
-                        books.map( (book) => {
-                            return (
-                                <li key={book.id}>{book.book_title}</li>
-                            );
-                        })
-                    }
-                </ul>
-                : <p>No books</p>
+    return loaded ? (
+        <div>
+            {books &&
+                <div>
+                    <span>page {page} of { Math.ceil( allBooks / itemsPerPage ) }</span>
+                    <Link to={`/books/${ +page - 1 }`}> &lt; Previous page</Link>
+                    <Link to={`/books/${ +page + 1 }`}> Next page &gt;</Link>
+                </div>
             }
+            <ul className="Books">
+                { books ?
+                    books.map( (book) => {
+                        return (
+                            <li className="Book" key={book.id}>
+                                <h2 className="Book__title">{book.book_title}</h2>
+                            
+                            </li>
+                        );
+                    })
+                    : <p>No books</p>
+                }
+            </ul>
         </div>
-    );
+    ) : ( <p>loading...</p>);
 }
 
 export default Books;
